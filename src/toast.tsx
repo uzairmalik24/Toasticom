@@ -6,6 +6,7 @@ import {
     FiAlertTriangle,
     FiInfo
 } from "react-icons/fi";
+import { useToastConfig } from "./ToastProvider";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -28,9 +29,41 @@ const typeStyles: Record<ToastType, { icon: React.ReactNode; style: React.CSSPro
     }
 };
 
-export const toast = (type: ToastType, message: string) => {
+// Helper function to merge styles selectively
+const mergeStyles = (
+    baseStyle: React.CSSProperties,
+    customStyle?: React.CSSProperties
+): React.CSSProperties => {
+    if (!customStyle) return baseStyle;
+
+    // Only override the properties that are explicitly provided in customStyle
+    const mergedStyle = { ...baseStyle };
+
+    Object.keys(customStyle).forEach(key => {
+        const styleKey = key as keyof React.CSSProperties;
+        if (customStyle[styleKey] !== undefined) {
+            (mergedStyle as any)[styleKey] = customStyle[styleKey];
+        }
+    });
+
+    return mergedStyle;
+};
+
+export const toast = (
+    type: ToastType,
+    message: string,
+    customStyle?: React.CSSProperties
+) => {
+    const config = useToastConfig();
+
+    // Get base style for the toast type
+    const baseStyle = typeStyles[type].style;
+
+    // Merge custom styles selectively
+    const finalStyle = mergeStyles(baseStyle, customStyle || config?.toastStyle);
+
     sonnerToast(message, {
         icon: typeStyles[type].icon,
-        style: typeStyles[type].style
+        style: finalStyle
     });
 };

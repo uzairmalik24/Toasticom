@@ -1,6 +1,6 @@
 {
   "name": "toasticom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple customizable toast notification library for React",
   "author": "Uzair Malik",
   "license": "MIT",
