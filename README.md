@@ -1,39 +1,28 @@
+toasticom
+A lightweight, customizable toast notification library for React. Initialize once, then use toast("type", "message") anywhere to show sleek notifications.
+✨ Features
 
-# toasticom
+Simple API: toast("success" | "error" | "warning" | "info", message, [options])
+Global defaults via ToastProvider (duration, position, styling)
+Customizable per-toast styles (override global defaults)
+Built-in polished look (rounded, blurred, shadowed)
+Optional close button
+Supports React 18+
+Custom toast styles (gradient, glassmorphism, neon, minimal)
 
-A clean, customizable toast notification library for React.  
-Initialize once in your app root, then trigger toasts anywhere with a tiny API.
-
-## ✨ Features
-
-- Initialize **once** with global defaults (duration, position, styling)
-- Simple API: `toast("success" | "error" | "warning" | "info", message)`
-- Polished default look (rounded, blurred, shadowed)
-- Optional global **close button**
-- Works with React 18+
-
----
-
-## 📦 Installation
-
-> **Where:** In your app where you want to use toasticom.
-
-```bash
+📦 Installation
+Install via npm, yarn, or pnpm:
 npm i toasticom
 # or
 yarn add toasticom
 # or
 pnpm add toasticom
-toasticom expects your app to provide react and react-dom (peer deps).
 
+Note: toasticom requires react and react-dom as peer dependencies.
 🚀 Quick Start
-Where: In your React app.
 
-1) Wrap your app with ToastProvider
-Vite/CRA – src/App.jsx:
-
-
-import React from "react";
+Wrap your app with ToastProvider:
+Vite/CRA (src/App.jsx):
 import { ToastProvider } from "toasticom";
 import Home from "./Home";
 
@@ -44,10 +33,9 @@ export default function App() {
         duration: 4000,
         position: "top-right",
         showCloseButton: true,
-        style: {
-          background: "#111827",
-          color: "#F9FAFB",
-          borderRadius: 12,
+        toastStyle: {
+          fontSize: "0.95rem",
+          fontWeight: 500,
         },
       }}
     >
@@ -55,102 +43,116 @@ export default function App() {
     </ToastProvider>
   );
 }
-Next.js (App Router) – app/layout.tsx or app/providers.tsx:
 
-
+Next.js (App Router) (app/layout.tsx or app/providers.tsx):
 "use client";
 
 import { ToastProvider } from "toasticom";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }) {
   return (
     <ToastProvider
       config={{
         duration: 3500,
         position: "bottom-right",
         showCloseButton: true,
-        style: { borderRadius: 14, backdropFilter: "blur(8px)" },
+        toastStyle: {
+          fontSize: "0.95rem",
+          fontWeight: 500,
+        },
       }}
     >
       {children}
     </ToastProvider>
   );
 }
-Then include <Providers> at the root of your layout.
 
-2) Call toast anywhere
 
-import React from "react";
+Trigger toasts anywhere:
 import { toast } from "toasticom";
 
 export default function Demo() {
   return (
     <div>
-      <button onClick={() => toast("success", "Saved successfully!")}>
-        Save
-      </button>
-      <button onClick={() => toast("error", "Something went wrong")}>
-        Fail
-      </button>
-      <button onClick={() => toast("warning", "Careful there...")}>
-        Warn
-      </button>
-      <button onClick={() => toast("info", "Heads up!")}>
-        Info
-      </button>
+      <button onClick={() => toast("success", "Saved successfully!")}>Save</button>
+      <button onClick={() => toast("error", "Something went wrong!")}>Fail</button>
+      <button onClick={() => toast("warning", "Careful there...")}>Warn</button>
+      <button onClick={() => toast("info", "Heads up!")}>Info</button>
     </div>
   );
 }
+
+
+
+🎨 Custom Toasts
+Override global styles for individual toasts by passing an optional options object to toast.
+Custom Gradient Toast
+toast("info", "🎨 Custom Styled Toast with Gradient!", {
+  background: "linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(236, 72, 153, 0.85))",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  borderRadius: "16px",
+  boxShadow: "0 8px 32px rgba(139, 92, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+  fontSize: "1rem",
+  fontWeight: "600",
+  padding: "16px 24px",
+});
+
+Glassmorphism Toast
+toast("success", "✨ Glassmorphism Style Toast!", {
+  background: "rgba(255, 255, 255, 0.1)",
+  backdropFilter: "blur(20px)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  color: "#fff",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+});
+
+Neon Glow Toast
+toast("warning", "⚡ Neon Glow Toast!", {
+  background: "#000",
+  color: "#00ff88",
+  border: "2px solid #00ff88",
+  borderRadius: "8px",
+  boxShadow: "0 0 20px #00ff88, inset 0 0 20px rgba(0, 255, 136, 0.1)",
+  fontWeight: "bold",
+});
+
+Minimal Toast
+toast("info", "Clean & Minimal", {
+  background: "#fff",
+  color: "#333",
+  border: "1px solid #e5e7eb",
+  borderRadius: "6px",
+  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+  fontSize: "0.875rem",
+});
+
 🔧 API Reference
 ToastProvider
-Wrap your app once. Accepts a config object.
-
-
-type ToastConfig = {
-  duration?: number; // default: 3000 (ms)
-  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"; // default: "top-right"
-  style?: React.CSSProperties; // global inline styles applied to each toast
-  showCloseButton?: boolean; // default: true
-};
-Example:
-
-
+Wrap your app to set global defaults.
 <ToastProvider
   config={{
-    duration: 4000,
-    position: "bottom-right",
-    showCloseButton: true,
-    style: {
-      background: "#1f2937",
-      color: "#fff",
-      borderRadius: 12,
-      boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+    duration: 4000, // ms, default: 3000
+    position: "top-right", // or top-left, bottom-right, bottom-left
+    showCloseButton: true, // default: true
+    toastStyle: {
+      fontSize: "0.95rem",
+      fontWeight: 500,
     },
   }}
 >
   {children}
 </ToastProvider>
-toast(type, message)
 
-type ToastType = "success" | "error" | "warning" | "info";
+toast
+Trigger a toast with type, message, and optional styles.
+toast(type: "success" | "error" | "warning" | "info", message: string, options?: React.CSSProperties): void;
 
-toast(type: ToastType, message: string): void;
 Example:
-
 toast("success", "Profile updated!");
 
-🎨 Styling Tips
-Global style (from ToastProvider) sets the base look (radius, padding, fonts, blur, shadows, dark/light).
+🛠️ Styling Tips
 
-Each type comes with built-in colors and icons for a distinct vibe.
-
-Want a premium feel? Try:
-
-
-style: {
-  background: "linear-gradient(135deg, #0ea5e9, #22d3ee)",
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.2)",
-  backdropFilter: "blur(10px)",
-  borderRadius: 14,
-}
+Global Styles: Set base styles (font, weight) in ToastProvider using toastStyle.
+Per-Toast Overrides: Use the options object to customize individual toasts.
+Premium Look: Try gradients, blur, or neon effects for a modern vibe.
+Responsive Design: Test toasts on mobile to ensure they don’t overlap UI elements.
