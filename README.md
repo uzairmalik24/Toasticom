@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 # 🚀 Custom React Toast Library (toasticom)
 
 A lightweight and customizable toast notification system for React.
@@ -62,22 +68,6 @@ function App() {
     </ToastProvider>
   );
 }
-⚙️ API
-
-ToastProvider
-
-Prop	        Type	   Default	  Description
-duration	    number	   4000	      Auto-hide time in ms
-position		"top-right" | "top-left" | "bottom-right" | "bottom-left"	"top-right"	Where the toast appears
-showCloseButton  boolean	true	  Show close button
-toastStyle	     object	{}	          Global styles override
-
-toast(type, message, options?)
-
-Param	    Type	   Description
-type	    "success" | "error" | "warning" | "info"	Type of toast
-message	    string	   Message to display
-options	    object	   Inline styles to override defaults
 
 
 
