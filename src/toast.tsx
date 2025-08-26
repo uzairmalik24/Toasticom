@@ -1,3 +1,4 @@
+// toast.tsx
 import React from "react";
 import { toast as sonnerToast } from "sonner";
 import {
@@ -6,7 +7,6 @@ import {
     FiAlertTriangle,
     FiInfo
 } from "react-icons/fi";
-import { useToastConfig } from "./ToastProvider";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -49,18 +49,24 @@ const mergeStyles = (
     return mergedStyle;
 };
 
+// Global config store to avoid using hooks
+let globalToastConfig: { toastStyle?: React.CSSProperties } = {};
+
+export const setGlobalToastConfig = (config: { toastStyle?: React.CSSProperties }) => {
+    globalToastConfig = config;
+};
+
 export const toast = (
     type: ToastType,
     message: string,
     customStyle?: React.CSSProperties
 ) => {
-    const config = useToastConfig();
-
     // Get base style for the toast type
     const baseStyle = typeStyles[type].style;
 
-    // Merge custom styles selectively
-    const finalStyle = mergeStyles(baseStyle, customStyle || config?.toastStyle);
+    // Merge with global config and custom styles
+    const withGlobalConfig = mergeStyles(baseStyle, globalToastConfig.toastStyle);
+    const finalStyle = mergeStyles(withGlobalConfig, customStyle);
 
     sonnerToast(message, {
         icon: typeStyles[type].icon,

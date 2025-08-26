@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { Toaster } from "sonner";
+import { setGlobalToastConfig } from "./toast";
 
 export type ToastConfig = {
     duration?: number;
@@ -44,6 +45,13 @@ export const ToastProvider: React.FC<{
     children: React.ReactNode;
     config?: ToastConfig;
 }> = ({ children, config }) => {
+    // Update global config whenever provider config changes
+    useEffect(() => {
+        setGlobalToastConfig({
+            toastStyle: config?.toastStyle
+        });
+    }, [config?.toastStyle]);
+
     // Merge default styles with custom styles selectively
     const toasterStyles = mergeStyles(DEFAULT_BASE_STYLES, config?.style);
 
